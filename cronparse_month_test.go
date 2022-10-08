@@ -44,26 +44,26 @@ func TestMonthIncrementWildcard(t *testing.T) {
 	assert.Equal(cron.Month.Exps[0].Increment, &cronparse.Increment{Wildcard: true, Buttom: 5})
 }
 
-func TestMonthString(t *testing.T) {
+func TestMonthName(t *testing.T) {
 	assert := assert.New(t)
 	tt := []string{"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"}
 
 	for _, t := range tt {
 		cron, err := cronparse.Parser.ParseString("", fmt.Sprintf("* * * %s ? *", t))
 		assert.NoError(err)
-		assert.Equal(cron.Month.Exps[0].String, &cronparse.MonthValue{Value: t})
+		assert.Equal(cron.Month.Exps[0].Name, &cronparse.MonthName{Value: t})
 
 		cron, err = cronparse.Parser.ParseString("", fmt.Sprintf("* * * %s ? *", strings.ToLower(t)))
 		assert.NoError(err)
-		assert.Equal(cron.Month.Exps[0].String, &cronparse.MonthValue{Value: strings.ToLower(t)})
+		assert.Equal(cron.Month.Exps[0].Name, &cronparse.MonthName{Value: strings.ToLower(t)})
 	}
 }
 
-func TestMonthStringRange(t *testing.T) {
+func TestMonthNameRange(t *testing.T) {
 	assert := assert.New(t)
 	cron, err := cronparse.Parser.ParseString("", "* * * JAN-DEC ? *")
 	assert.NoError(err)
-	assert.Equal(cron.Month.Exps[0].StringRange, &cronparse.MonthRange{From: "JAN", To: "DEC"})
+	assert.Equal(cron.Month.Exps[0].NameRange, &cronparse.MonthRange{From: "JAN", To: "DEC"})
 }
 
 func TestMonthComplex(t *testing.T) {
@@ -75,6 +75,6 @@ func TestMonthComplex(t *testing.T) {
 	assert.Equal(cron.Month.Exps[2].NumberRange, &cronparse.NumberRange{From: 1, To: 12})
 	assert.Equal(cron.Month.Exps[3].Increment, &cronparse.Increment{Top: 1, Buttom: 5})
 	assert.Equal(cron.Month.Exps[4].Increment, &cronparse.Increment{Wildcard: true, Buttom: 5})
-	assert.Equal(cron.Month.Exps[5].String, &cronparse.MonthValue{Value: "JAN"})
-	assert.Equal(cron.Month.Exps[6].StringRange, &cronparse.MonthRange{From: "JAN", To: "DEC"})
+	assert.Equal(cron.Month.Exps[5].Name, &cronparse.MonthName{Value: "JAN"})
+	assert.Equal(cron.Month.Exps[6].NameRange, &cronparse.MonthRange{From: "JAN", To: "DEC"})
 }

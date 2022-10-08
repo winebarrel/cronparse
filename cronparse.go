@@ -1,6 +1,9 @@
 package cronparse
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/alecthomas/participle/v2"
 	"github.com/alecthomas/participle/v2/lexer"
 )
@@ -19,60 +22,6 @@ var (
 	)
 )
 
-type Number struct {
-	Value int `@Number`
-}
-
-type MonthValue struct {
-	Value string `@Month`
-}
-
-type WeekValue struct {
-	Value string `@Week`
-}
-
-type NumberRange struct {
-	From int `@Number`
-	To   int `"-" @Number`
-}
-
-type WeekRange struct {
-	From string `@Week`
-	To   string `"-" @Week`
-}
-
-type MonthRange struct {
-	From string `@Month`
-	To   string `"-" @Month`
-}
-
-type All struct {
-	Value struct{} `"*"`
-}
-
-type Increment struct {
-	Wildcard bool `( @"*"`
-	Top      int  `| @Number )`
-	Buttom   int  `"/" @Number`
-}
-
-type Any struct {
-	Value struct{} `"?"`
-}
-
-type Last struct {
-	Value struct{} `"L"`
-}
-
-type Weekday struct {
-	Value int `@Number "W"`
-}
-
-type Instance struct {
-	DayOfWeek    int `@Number`
-	NthDayOfWeek int `"#" @Number`
-}
-
 type CommonExp struct {
 	Increment   *Increment   `@@`
 	NumberRange *NumberRange `| @@`
@@ -80,13 +29,45 @@ type CommonExp struct {
 	All         *All         `| @@`
 }
 
+func (v *CommonExp) String() string {
+	if v.Increment != nil {
+		return v.Increment.String()
+	} else if v.NumberRange != nil {
+		return v.NumberRange.String()
+	} else if v.Number != nil {
+		return v.Number.String()
+	} else if v.All != nil {
+		return v.All.String()
+	}
+
+	return ""
+}
+
+func (v *CommonExp) Present() bool {
+	return v.Increment != nil || v.NumberRange != nil || v.Number != nil || v.All != nil
+}
+
 // minutes
 type MinutesExp struct {
 	CommonExp
 }
 
+func (v *MinutesExp) String() string {
+	return v.CommonExp.String()
+}
+
 type Minutes struct {
 	Exps []*MinutesExp `@@ ( "," @@ )*`
+}
+
+func (v *Minutes) String() string {
+	strs := make([]string, 0, len(v.Exps))
+
+	for _, e := range v.Exps {
+		strs = append(strs, e.String())
+	}
+
+	return strings.Join(strs, ",")
 }
 
 // hours
@@ -94,8 +75,22 @@ type HoursExp struct {
 	CommonExp
 }
 
+func (v *HoursExp) String() string {
+	return v.CommonExp.String()
+}
+
 type Hours struct {
 	Exps []*HoursExp `@@ ( "," @@ )*`
+}
+
+func (v *Hours) String() string {
+	strs := make([]string, 0, len(v.Exps))
+
+	for _, e := range v.Exps {
+		strs = append(strs, e.String())
+	}
+
+	return strings.Join(strs, ",")
 }
 
 // day of month
@@ -106,35 +101,113 @@ type DayOfMonthExp struct {
 	Last *Last `| @@`
 }
 
+func (v *DayOfMonthExp) String() string {
+	if v.CommonExp.Present() {
+		return v.CommonExp.String()
+	} else if v.Weekday != nil {
+		return v.Weekday.String()
+	} else if v.Any != nil {
+		return v.Any.String()
+	} else if v.Last != nil {
+		return v.Last.String()
+	}
+
+	return ""
+}
+
 type DayOfMonth struct {
 	Exps []*DayOfMonthExp `@@ ( "," @@ )*`
+}
+
+func (v *DayOfMonth) String() string {
+	strs := make([]string, 0, len(v.Exps))
+
+	for _, e := range v.Exps {
+		strs = append(strs, e.String())
+	}
+
+	return strings.Join(strs, ",")
 }
 
 // month
 type MonthExp struct {
 	CommonExp
-	StringRange *MonthRange `| @@`
-	String      *MonthValue `| @@`
-	Any         *Any        `| @@`
-	Last        *Last       `| @@`
+	NameRange *MonthRange `| @@`
+	Name      *MonthName  `| @@`
+	Any       *Any        `| @@`
+	Last      *Last       `| @@`
+}
+
+func (v *MonthExp) String() string {
+	if v.CommonExp.Present() {
+		return v.CommonExp.String()
+	} else if v.NameRange != nil {
+		return v.NameRange.String()
+	} else if v.Name != nil {
+		return v.Name.String()
+	} else if v.Any != nil {
+		return v.Any.String()
+	} else if v.Last != nil {
+		return v.Last.String()
+	}
+
+	return ""
 }
 
 type Month struct {
 	Exps []*MonthExp `@@ ( "," @@ )*`
 }
 
+func (v *Month) String() string {
+	strs := make([]string, 0, len(v.Exps))
+
+	for _, e := range v.Exps {
+		strs = append(strs, e.String())
+	}
+
+	return strings.Join(strs, ",")
+}
+
 // day of week
 type DayOfWeekExp struct {
 	Instance *Instance `@@ |`
 	CommonExp
-	StringRange *WeekRange `| @@`
-	String      *WeekValue `| @@`
-	Any         *Any       `| @@`
-	Last        *Last      `| @@`
+	NameRange *WeekRange `| @@`
+	Name      *WeekName  `| @@`
+	Any       *Any       `| @@`
+	Last      *Last      `| @@`
+}
+
+func (v *DayOfWeekExp) String() string {
+	if v.CommonExp.Present() {
+		return v.CommonExp.String()
+	} else if v.Instance != nil {
+		return v.Instance.String()
+	} else if v.NameRange != nil {
+		return v.NameRange.String()
+	} else if v.Name != nil {
+		return v.Name.String()
+	} else if v.Any != nil {
+		return v.Any.String()
+	} else if v.Last != nil {
+		return v.Last.String()
+	}
+
+	return ""
 }
 
 type DayOfWeek struct {
 	Exps []*DayOfWeekExp `@@ ( "," @@ )*`
+}
+
+func (v *DayOfWeek) String() string {
+	strs := make([]string, 0, len(v.Exps))
+
+	for _, e := range v.Exps {
+		strs = append(strs, e.String())
+	}
+
+	return strings.Join(strs, ",")
 }
 
 // year
@@ -142,8 +215,22 @@ type YearExp struct {
 	CommonExp
 }
 
+func (v *YearExp) String() string {
+	return v.CommonExp.String()
+}
+
 type Year struct {
 	Exps []*YearExp `@@ ( "," @@ )*`
+}
+
+func (v *Year) String() string {
+	strs := make([]string, 0, len(v.Exps))
+
+	for _, e := range v.Exps {
+		strs = append(strs, e.String())
+	}
+
+	return strings.Join(strs, ",")
 }
 
 type Expression struct {
@@ -153,4 +240,15 @@ type Expression struct {
 	Month      *Month      `SP @@`
 	DayOfWeek  *DayOfWeek  `SP @@`
 	Year       *Year       `SP @@`
+}
+
+func (v *Expression) String() string {
+	return fmt.Sprintf("%s %s %s %s %s %s",
+		v.Minutes.String(),
+		v.Hours.String(),
+		v.DayOfMonth.String(),
+		v.Month.String(),
+		v.DayOfWeek.String(),
+		v.Year.String(),
+	)
 }

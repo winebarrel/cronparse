@@ -58,26 +58,26 @@ func TestDayOfWeekLast(t *testing.T) {
 	assert.Equal(cron.DayOfWeek.Exps[0].Last, &cronparse.Last{})
 }
 
-func TestDayOfWeekString(t *testing.T) {
+func TestDayOfWeekName(t *testing.T) {
 	assert := assert.New(t)
 	tt := []string{"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"}
 
 	for _, t := range tt {
 		cron, err := cronparse.Parser.ParseString("", fmt.Sprintf("* * ? * %s *", t))
 		assert.NoError(err)
-		assert.Equal(cron.DayOfWeek.Exps[0].String, &cronparse.WeekValue{Value: t})
+		assert.Equal(cron.DayOfWeek.Exps[0].Name, &cronparse.WeekName{Value: t})
 
 		cron, err = cronparse.Parser.ParseString("", fmt.Sprintf("* * ? * %s *", strings.ToLower(t)))
 		assert.NoError(err)
-		assert.Equal(cron.DayOfWeek.Exps[0].String, &cronparse.WeekValue{Value: strings.ToLower(t)})
+		assert.Equal(cron.DayOfWeek.Exps[0].Name, &cronparse.WeekName{Value: strings.ToLower(t)})
 	}
 }
 
-func TestDayOfWeekStringRange(t *testing.T) {
+func TestDayOfWeekNameRange(t *testing.T) {
 	assert := assert.New(t)
 	cron, err := cronparse.Parser.ParseString("", "* * * * SUN-SAT *")
 	assert.NoError(err)
-	assert.Equal(cron.DayOfWeek.Exps[0].StringRange, &cronparse.WeekRange{From: "SUN", To: "SAT"})
+	assert.Equal(cron.DayOfWeek.Exps[0].NameRange, &cronparse.WeekRange{From: "SUN", To: "SAT"})
 }
 
 func TestDayOfWeekComplex(t *testing.T) {
@@ -91,6 +91,6 @@ func TestDayOfWeekComplex(t *testing.T) {
 	assert.Equal(cron.DayOfWeek.Exps[4].Increment, &cronparse.Increment{Wildcard: true, Buttom: 5})
 	assert.Equal(cron.DayOfWeek.Exps[5].Any, &cronparse.Any{})
 	assert.Equal(cron.DayOfWeek.Exps[6].Last, &cronparse.Last{})
-	assert.Equal(cron.DayOfWeek.Exps[7].String, &cronparse.WeekValue{Value: "SUN"})
-	assert.Equal(cron.DayOfWeek.Exps[8].StringRange, &cronparse.WeekRange{From: "SUN", To: "SAT"})
+	assert.Equal(cron.DayOfWeek.Exps[7].Name, &cronparse.WeekName{Value: "SUN"})
+	assert.Equal(cron.DayOfWeek.Exps[8].NameRange, &cronparse.WeekRange{From: "SUN", To: "SAT"})
 }
