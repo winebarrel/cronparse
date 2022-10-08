@@ -288,13 +288,13 @@ func (v *DayOfWeekExp) String() string {
 }
 
 func (v *DayOfWeekExp) Match(t time.Time) bool {
-	wday := int(t.Weekday())
-
-	if wday == 0 {
-		wday = 7
-	}
-
 	if v.CommonExp.Present() {
+		wday := int(t.Weekday())
+
+		if wday == 0 {
+			wday = 7
+		}
+
 		return v.CommonExp.Match(wday)
 	} else if v.Instance != nil {
 		return v.Instance.Match(t)
