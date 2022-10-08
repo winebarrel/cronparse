@@ -150,13 +150,30 @@ func (v *Any) Match(x interface{}) bool {
 	return true
 }
 
-// last
-type Last struct {
+// last of month
+type LastOfMonth struct {
 	Value struct{} `"L"`
 }
 
-func (v *Last) String() string {
+func (v *LastOfMonth) String() string {
 	return "L"
+}
+
+func (v *LastOfMonth) Match(t time.Time) bool {
+	return utils.LastOfMonth(t) == t.Day()
+}
+
+// last of week
+type LastOfWeek struct {
+	Value struct{} `"L"`
+}
+
+func (v *LastOfWeek) String() string {
+	return "L"
+}
+
+func (v *LastOfWeek) Match(t time.Time) bool {
+	return t.Weekday() == time.Saturday
 }
 
 // weekday

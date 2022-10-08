@@ -53,7 +53,7 @@ func TestDayOfMonthLast(t *testing.T) {
 	assert := assert.New(t)
 	cron, err := cronparse.Parser.ParseString("", "* * L * ? *")
 	assert.NoError(err)
-	assert.Equal(&cronparse.Last{}, cron.DayOfMonth.Exps[0].Last)
+	assert.Equal(&cronparse.LastOfMonth{}, cron.DayOfMonth.Exps[0].Last)
 }
 
 func TestDayOfMonthWeekday(t *testing.T) {
@@ -73,6 +73,6 @@ func TestDayOfMonthComplex(t *testing.T) {
 	assert.Equal(&cronparse.Increment{Top: 1, Buttom: 5}, cron.DayOfMonth.Exps[3].Increment)
 	assert.Equal(&cronparse.Increment{Wildcard: true, Buttom: 5}, cron.DayOfMonth.Exps[4].Increment)
 	assert.Equal(&cronparse.Any{}, cron.DayOfMonth.Exps[5].Any)
-	assert.Equal(&cronparse.Last{}, cron.DayOfMonth.Exps[6].Last)
+	assert.Equal(&cronparse.LastOfMonth{}, cron.DayOfMonth.Exps[6].Last)
 	assert.Equal(&cronparse.Weekday{Value: 3}, cron.DayOfMonth.Exps[7].Weekday)
 }

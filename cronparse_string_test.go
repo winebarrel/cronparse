@@ -67,9 +67,15 @@ func TestAnyToString(t *testing.T) {
 	assert.Equal("?", x.String())
 }
 
-func TestLastToString(t *testing.T) {
+func TestLastOfMonthToString(t *testing.T) {
 	assert := assert.New(t)
-	x := &cronparse.Last{}
+	x := &cronparse.LastOfMonth{}
+	assert.Equal("L", x.String())
+}
+
+func TestLastOfWeekToString(t *testing.T) {
+	assert := assert.New(t)
+	x := &cronparse.LastOfWeek{}
 	assert.Equal("L", x.String())
 }
 

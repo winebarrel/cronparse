@@ -57,7 +57,7 @@ func TestMonthNameToNumber(t *testing.T) {
 	}
 }
 
-func TestLastOfWeek(t *testing.T) {
+func TestLastOfMonth(t *testing.T) {
 	assert := assert.New(t)
 
 	tt := []struct {

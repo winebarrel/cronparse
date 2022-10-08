@@ -271,3 +271,95 @@ func TestMatchInstance(t *testing.T) {
 		assert.Equal(t.expected, t.i.Match(t.tm), t)
 	}
 }
+
+func TestMatchLastOfMonth(t *testing.T) {
+	assert := assert.New(t)
+
+	tt := []struct {
+		tm       time.Time
+		l        *cronparse.LastOfMonth
+		expected bool
+	}{
+		{time.Date(2023, 1, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 2, 28, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 3, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 4, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 5, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 6, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 7, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 8, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 9, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 10, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 11, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 12, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 1, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 2, 29, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 3, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 4, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 5, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 6, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 7, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 8, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 9, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 10, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 11, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2024, 12, 31, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, true},
+		{time.Date(2023, 1, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 2, 27, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 3, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 4, 29, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 5, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 6, 29, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 7, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 8, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 9, 29, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 10, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 11, 29, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2023, 12, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 1, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 2, 28, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 3, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 4, 29, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 5, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 6, 29, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 7, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 8, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 9, 29, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 10, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 11, 29, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+		{time.Date(2024, 12, 30, 9, 0, 0, 0, time.UTC), &cronparse.LastOfMonth{}, false},
+	}
+
+	for _, t := range tt {
+		assert.Equal(t.expected, t.l.Match(t.tm), t.tm)
+	}
+}
+
+func TestMatchLastOfWeek(t *testing.T) {
+	assert := assert.New(t)
+
+	tt := []struct {
+		tm       time.Time
+		l        *cronparse.LastOfWeek
+		expected bool
+	}{
+		{time.Date(2023, 9, 1, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 2, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, true},
+		{time.Date(2023, 9, 3, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 4, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 5, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 6, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 7, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 8, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 9, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, true},
+		{time.Date(2023, 9, 10, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 11, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 12, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 13, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+		{time.Date(2023, 9, 14, 9, 0, 0, 0, time.UTC), &cronparse.LastOfWeek{}, false},
+	}
+
+	for _, t := range tt {
+		assert.Equal(t.expected, t.l.Match(t.tm), t.tm)
+	}
+}
