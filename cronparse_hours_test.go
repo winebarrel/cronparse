@@ -11,44 +11,44 @@ func TestHoursAll(t *testing.T) {
 	assert := assert.New(t)
 	cron, err := cronparse.Parser.ParseString("", "* * * * ? *")
 	assert.NoError(err)
-	assert.Equal(cron.Hours.Exps[0].All, &cronparse.All{})
+	assert.Equal(&cronparse.All{}, cron.Hours.Exps[0].All)
 }
 
 func TestHoursNumber(t *testing.T) {
 	assert := assert.New(t)
 	cron, err := cronparse.Parser.ParseString("", "* 0 * * ? *")
 	assert.NoError(err)
-	assert.Equal(cron.Hours.Exps[0].Number, &cronparse.Number{Value: 0})
+	assert.Equal(&cronparse.Number{Value: 0}, cron.Hours.Exps[0].Number)
 }
 
 func TestHoursNumberRange(t *testing.T) {
 	assert := assert.New(t)
 	cron, err := cronparse.Parser.ParseString("", "* 0-23 * * ? *")
 	assert.NoError(err)
-	assert.Equal(cron.Hours.Exps[0].NumberRange, &cronparse.NumberRange{From: 0, To: 23})
+	assert.Equal(&cronparse.NumberRange{From: 0, To: 23}, cron.Hours.Exps[0].NumberRange)
 }
 
 func TestHoursIncrement(t *testing.T) {
 	assert := assert.New(t)
 	cron, err := cronparse.Parser.ParseString("", "* 0/5 * * ? *")
 	assert.NoError(err)
-	assert.Equal(cron.Hours.Exps[0].Increment, &cronparse.Increment{Top: 0, Buttom: 5})
+	assert.Equal(&cronparse.Increment{Top: 0, Buttom: 5}, cron.Hours.Exps[0].Increment)
 }
 
 func TestHoursIncrementWildcard(t *testing.T) {
 	assert := assert.New(t)
 	cron, err := cronparse.Parser.ParseString("", "* */5 * * ? *")
 	assert.NoError(err)
-	assert.Equal(cron.Hours.Exps[0].Increment, &cronparse.Increment{Wildcard: true, Buttom: 5})
+	assert.Equal(&cronparse.Increment{Wildcard: true, Buttom: 5}, cron.Hours.Exps[0].Increment)
 }
 
 func TestHoursComplex(t *testing.T) {
 	assert := assert.New(t)
 	cron, err := cronparse.Parser.ParseString("", "* *,0,0-23,0/5,*/5 * * ? *")
 	assert.NoError(err)
-	assert.Equal(cron.Hours.Exps[0].All, &cronparse.All{})
-	assert.Equal(cron.Hours.Exps[1].Number, &cronparse.Number{Value: 0})
-	assert.Equal(cron.Hours.Exps[2].NumberRange, &cronparse.NumberRange{From: 0, To: 23})
-	assert.Equal(cron.Hours.Exps[3].Increment, &cronparse.Increment{Top: 0, Buttom: 5})
-	assert.Equal(cron.Hours.Exps[4].Increment, &cronparse.Increment{Wildcard: true, Buttom: 5})
+	assert.Equal(&cronparse.All{}, cron.Hours.Exps[0].All)
+	assert.Equal(&cronparse.Number{Value: 0}, cron.Hours.Exps[1].Number)
+	assert.Equal(&cronparse.NumberRange{From: 0, To: 23}, cron.Hours.Exps[2].NumberRange)
+	assert.Equal(&cronparse.Increment{Top: 0, Buttom: 5}, cron.Hours.Exps[3].Increment)
+	assert.Equal(&cronparse.Increment{Wildcard: true, Buttom: 5}, cron.Hours.Exps[4].Increment)
 }

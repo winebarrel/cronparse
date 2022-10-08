@@ -3,16 +3,20 @@ package cronparse
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/alecthomas/participle/v2"
 	"github.com/alecthomas/participle/v2/lexer"
 )
 
 var (
+	monthNames = []string{"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"}
+	weekNames  = []string{"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"}
+
 	cronLexer = lexer.MustSimple([]lexer.SimpleRule{
 		{`Number`, `\d+`},
-		{`Month`, `(?i)(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)`},
-		{`Week`, `(?i)(?:MON|TUE|WED|THU|FRI|SAT|SUN)`},
+		{`Month`, `(?i)(?:` + strings.Join(monthNames, "|") + `)`},
+		{`Week`, `(?i)(?:` + strings.Join(weekNames, "|") + `)`},
 		{`Symbol`, `[,\-\*\?/LW#]`},
 		{`SP`, `\s+`},
 	})
@@ -47,6 +51,20 @@ func (v *CommonExp) Present() bool {
 	return v.Increment != nil || v.NumberRange != nil || v.Number != nil || v.All != nil
 }
 
+func (v *CommonExp) Match(x int) bool {
+	if v.Increment != nil {
+		return v.Increment.Match(x)
+	} else if v.NumberRange != nil {
+		return v.NumberRange.Match(x)
+	} else if v.Number != nil {
+		return v.Number.Match(x)
+	} else if v.All != nil {
+		return v.All.Match(x)
+	}
+
+	return false
+}
+
 // minutes
 type MinutesExp struct {
 	CommonExp
@@ -54,6 +72,10 @@ type MinutesExp struct {
 
 func (v *MinutesExp) String() string {
 	return v.CommonExp.String()
+}
+
+func (v *MinutesExp) Match(t time.Time) bool {
+	return v.CommonExp.Match(t.Minute())
 }
 
 type Minutes struct {
@@ -70,6 +92,16 @@ func (v *Minutes) String() string {
 	return strings.Join(strs, ",")
 }
 
+func (v *Minutes) Match(t time.Time) bool {
+	for _, e := range v.Exps {
+		if e.Match(t) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // hours
 type HoursExp struct {
 	CommonExp
@@ -77,6 +109,10 @@ type HoursExp struct {
 
 func (v *HoursExp) String() string {
 	return v.CommonExp.String()
+}
+
+func (v *HoursExp) Match(t time.Time) bool {
+	return v.CommonExp.Match(t.Hour())
 }
 
 type Hours struct {
@@ -91,6 +127,16 @@ func (v *Hours) String() string {
 	}
 
 	return strings.Join(strs, ",")
+}
+
+func (v *Hours) Match(t time.Time) bool {
+	for _, e := range v.Exps {
+		if e.Match(t) {
+			return true
+		}
+	}
+
+	return false
 }
 
 // day of month
@@ -115,6 +161,20 @@ func (v *DayOfMonthExp) String() string {
 	return ""
 }
 
+func (v *DayOfMonthExp) Match(t time.Time) bool {
+	if v.CommonExp.Present() {
+		return v.CommonExp.Match(t.Day())
+	} else if v.Weekday != nil {
+		return v.Weekday.Match(t)
+	} else if v.Any != nil {
+		return v.Any.Match(t.Day())
+	} else if v.Last != nil {
+		return LastOfMonth(t) == t.Day()
+	}
+
+	return false
+}
+
 type DayOfMonth struct {
 	Exps []*DayOfMonthExp `@@ ( "," @@ )*`
 }
@@ -129,13 +189,22 @@ func (v *DayOfMonth) String() string {
 	return strings.Join(strs, ",")
 }
 
+func (v *DayOfMonth) Match(t time.Time) bool {
+	for _, e := range v.Exps {
+		if e.Match(t) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // month
 type MonthExp struct {
 	CommonExp
 	NameRange *MonthRange `| @@`
 	Name      *MonthName  `| @@`
 	Any       *Any        `| @@`
-	Last      *Last       `| @@`
 }
 
 func (v *MonthExp) String() string {
@@ -147,11 +216,23 @@ func (v *MonthExp) String() string {
 		return v.Name.String()
 	} else if v.Any != nil {
 		return v.Any.String()
-	} else if v.Last != nil {
-		return v.Last.String()
 	}
 
 	return ""
+}
+
+func (v *MonthExp) Match(t time.Time) bool {
+	if v.CommonExp.Present() {
+		return v.CommonExp.Match(int(t.Month()))
+	} else if v.NameRange != nil {
+		return v.NameRange.Match(t.Month())
+	} else if v.Name != nil {
+		return v.Name.Match(t.Month())
+	} else if v.Any != nil {
+		return v.Any.Match(t.Month())
+	}
+
+	return false
 }
 
 type Month struct {
@@ -166,6 +247,16 @@ func (v *Month) String() string {
 	}
 
 	return strings.Join(strs, ",")
+}
+
+func (v *Month) Match(t time.Time) bool {
+	for _, e := range v.Exps {
+		if e.Match(t) {
+			return true
+		}
+	}
+
+	return false
 }
 
 // day of week
@@ -196,6 +287,30 @@ func (v *DayOfWeekExp) String() string {
 	return ""
 }
 
+func (v *DayOfWeekExp) Match(t time.Time) bool {
+	wday := int(t.Weekday())
+
+	if wday == 0 {
+		wday = 7
+	}
+
+	if v.CommonExp.Present() {
+		return v.CommonExp.Match(wday)
+	} else if v.Instance != nil {
+		return v.Instance.Match(t)
+	} else if v.NameRange != nil {
+		return v.NameRange.Match(t.Weekday())
+	} else if v.Name != nil {
+		return v.Name.Match(t.Weekday())
+	} else if v.Any != nil {
+		return v.Any.Match(t.Weekday())
+	} else if v.Last != nil {
+		return t.Weekday() == time.Saturday
+	}
+
+	return false
+}
+
 type DayOfWeek struct {
 	Exps []*DayOfWeekExp `@@ ( "," @@ )*`
 }
@@ -210,6 +325,16 @@ func (v *DayOfWeek) String() string {
 	return strings.Join(strs, ",")
 }
 
+func (v *DayOfWeek) Match(t time.Time) bool {
+	for _, e := range v.Exps {
+		if e.Match(t) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // year
 type YearExp struct {
 	CommonExp
@@ -217,6 +342,10 @@ type YearExp struct {
 
 func (v *YearExp) String() string {
 	return v.CommonExp.String()
+}
+
+func (v *YearExp) Match(t time.Time) bool {
+	return v.CommonExp.Match(t.Hour())
 }
 
 type Year struct {
@@ -231,6 +360,16 @@ func (v *Year) String() string {
 	}
 
 	return strings.Join(strs, ",")
+}
+
+func (v *Year) Match(t time.Time) bool {
+	for _, e := range v.Exps {
+		if e.Match(t) {
+			return true
+		}
+	}
+
+	return false
 }
 
 type Expression struct {
@@ -251,4 +390,13 @@ func (v *Expression) String() string {
 		v.DayOfWeek.String(),
 		v.Year.String(),
 	)
+}
+
+func (v *Expression) Match(t time.Time) bool {
+	return v.Minutes.Match(t) &&
+		v.Hours.Match(t) &&
+		v.DayOfMonth.Match(t) &&
+		v.Month.Match(t) &&
+		v.DayOfWeek.Match(t) &&
+		v.Year.Match(t)
 }

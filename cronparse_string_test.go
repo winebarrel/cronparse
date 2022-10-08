@@ -10,79 +10,79 @@ import (
 func TestNumberToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.Number{Value: 1}
-	assert.Equal(x.String(), "1")
+	assert.Equal("1", x.String())
 }
 
 func TestMonthNameToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.MonthName{Value: "JAN"}
-	assert.Equal(x.String(), "JAN")
+	assert.Equal("JAN", x.String())
 }
 
 func TestWeekNameToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.WeekName{Value: "SUN"}
-	assert.Equal(x.String(), "SUN")
+	assert.Equal("SUN", x.String())
 }
 
 func TestNumberRangeToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.NumberRange{From: 0, To: 59}
-	assert.Equal(x.String(), "0-59")
+	assert.Equal("0-59", x.String())
 }
 
 func TestWeekRangeToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.WeekRange{From: "SUN", To: "SAT"}
-	assert.Equal(x.String(), "SUN-SAT")
+	assert.Equal("SUN-SAT", x.String())
 }
 
 func TestMonthRangeToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.MonthRange{From: "JAN", To: "DEC"}
-	assert.Equal(x.String(), "JAN-DEC")
+	assert.Equal("JAN-DEC", x.String())
 }
 
 func TestAllToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.All{}
-	assert.Equal(x.String(), "*")
+	assert.Equal("*", x.String())
 }
 
 func TestIncrementToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.Increment{Top: 0, Buttom: 5}
-	assert.Equal(x.String(), "0/5")
+	assert.Equal("0/5", x.String())
 }
 
 func TestIncrementWildcardToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.Increment{Wildcard: true, Buttom: 5}
-	assert.Equal(x.String(), "*/5")
+	assert.Equal("*/5", x.String())
 }
 
 func TestAnyToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.Any{}
-	assert.Equal(x.String(), "?")
+	assert.Equal("?", x.String())
 }
 
 func TestLastToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.Last{}
-	assert.Equal(x.String(), "L")
+	assert.Equal("L", x.String())
 }
 
 func TestWeekdayToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.Weekday{Value: 3}
-	assert.Equal(x.String(), "3W")
+	assert.Equal("3W", x.String())
 }
 
 func TestInstanceToString(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.Instance{DayOfWeek: 6, NthDayOfWeek: 3}
-	assert.Equal(x.String(), "6#3")
+	assert.Equal("6#3", x.String())
 }
 
 func TestMinutesExpToString(t *testing.T) {
@@ -92,7 +92,7 @@ func TestMinutesExpToString(t *testing.T) {
 			Number: &cronparse.Number{Value: 1},
 		},
 	}
-	assert.Equal(x.String(), "1")
+	assert.Equal("1", x.String())
 }
 
 func TestMinutesToString(t *testing.T) {
@@ -111,7 +111,7 @@ func TestMinutesToString(t *testing.T) {
 			},
 		},
 	}
-	assert.Equal(x.String(), "1,2")
+	assert.Equal("1,2", x.String())
 }
 
 func TestHoursExpToString(t *testing.T) {
@@ -121,7 +121,7 @@ func TestHoursExpToString(t *testing.T) {
 			Number: &cronparse.Number{Value: 1},
 		},
 	}
-	assert.Equal(x.String(), "1")
+	assert.Equal("1", x.String())
 }
 
 func TestHoursToString(t *testing.T) {
@@ -140,7 +140,7 @@ func TestHoursToString(t *testing.T) {
 			},
 		},
 	}
-	assert.Equal(x.String(), "1,2")
+	assert.Equal("1,2", x.String())
 }
 
 func TestDayOfMonthExpToString(t *testing.T) {
@@ -150,7 +150,7 @@ func TestDayOfMonthExpToString(t *testing.T) {
 			Number: &cronparse.Number{Value: 1},
 		},
 	}
-	assert.Equal(x.String(), "1")
+	assert.Equal("1", x.String())
 }
 
 func TestDayOfMonthToString(t *testing.T) {
@@ -169,7 +169,7 @@ func TestDayOfMonthToString(t *testing.T) {
 			},
 		},
 	}
-	assert.Equal(x.String(), "1,2")
+	assert.Equal("1,2", x.String())
 }
 
 func TestMonthExpToString(t *testing.T) {
@@ -179,7 +179,7 @@ func TestMonthExpToString(t *testing.T) {
 			Number: &cronparse.Number{Value: 1},
 		},
 	}
-	assert.Equal(x.String(), "1")
+	assert.Equal("1", x.String())
 }
 
 func TestMonthToString(t *testing.T) {
@@ -198,7 +198,7 @@ func TestMonthToString(t *testing.T) {
 			},
 		},
 	}
-	assert.Equal(x.String(), "1,2")
+	assert.Equal("1,2", x.String())
 }
 
 func TestDayOfWeekExpToString(t *testing.T) {
@@ -208,7 +208,7 @@ func TestDayOfWeekExpToString(t *testing.T) {
 			Number: &cronparse.Number{Value: 1},
 		},
 	}
-	assert.Equal(x.String(), "1")
+	assert.Equal("1", x.String())
 }
 
 func TestDayOfWeekToString(t *testing.T) {
@@ -227,7 +227,7 @@ func TestDayOfWeekToString(t *testing.T) {
 			},
 		},
 	}
-	assert.Equal(x.String(), "1,2")
+	assert.Equal("1,2", x.String())
 }
 
 func TestYearExpToString(t *testing.T) {
@@ -237,7 +237,7 @@ func TestYearExpToString(t *testing.T) {
 			Number: &cronparse.Number{Value: 1},
 		},
 	}
-	assert.Equal(x.String(), "1")
+	assert.Equal("1", x.String())
 }
 
 func TestYearToString(t *testing.T) {
@@ -256,7 +256,7 @@ func TestYearToString(t *testing.T) {
 			},
 		},
 	}
-	assert.Equal(x.String(), "1,2")
+	assert.Equal("1,2", x.String())
 }
 
 func TestExpressionToString(t *testing.T) {
@@ -326,5 +326,5 @@ func TestExpressionToString(t *testing.T) {
 			},
 		},
 	}
-	assert.Equal(x.String(), "0 10 * * ? *")
+	assert.Equal("0 10 * * ? *", x.String())
 }
