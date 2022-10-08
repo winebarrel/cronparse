@@ -2,6 +2,12 @@
 
 Cron expression parser.
 
+## Installation
+
+```sh
+go get github.com/winebarrel/cronparse@v1.1.0
+```
+
 ## Usage
 
 ```go
