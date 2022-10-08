@@ -1,11 +1,11 @@
-package cronparse_test
+package utils_test
 
 import (
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/winebarrel/cronparse"
+	"github.com/winebarrel/cronparse/utils"
 )
 
 func TestWeekNameToNumber(t *testing.T) {
@@ -26,7 +26,7 @@ func TestWeekNameToNumber(t *testing.T) {
 	}
 
 	for _, t := range tt {
-		assert.Equal(t.expected, cronparse.WeekNameToNumber(t.mon), t.mon)
+		assert.Equal(t.expected, utils.WeekNameToNumber(t.mon), t.mon)
 	}
 }
 
@@ -53,7 +53,7 @@ func TestMonthNameToNumber(t *testing.T) {
 	}
 
 	for _, t := range tt {
-		assert.Equal(t.expected, cronparse.MonthNameToNumber(t.mon), t.mon)
+		assert.Equal(t.expected, utils.MonthNameToNumber(t.mon), t.mon)
 	}
 }
 
@@ -91,7 +91,7 @@ func TestLastOfWeek(t *testing.T) {
 	}
 
 	for _, t := range tt {
-		assert.Equal(t.expected, cronparse.LastOfMonth(t.tm), t.tm)
+		assert.Equal(t.expected, utils.LastOfMonth(t.tm), t.tm)
 	}
 }
 
@@ -111,7 +111,7 @@ func TestNearestWeekday(t *testing.T) {
 	}
 
 	for _, t := range tt {
-		assert.Equal(t.expected, cronparse.NearestWeekday(t.tm), t.tm)
+		assert.Equal(t.expected, utils.NearestWeekday(t.tm), t.tm)
 	}
 }
 
@@ -188,6 +188,6 @@ func TestNthDayOfWeek(t *testing.T) {
 	}
 
 	for _, t := range tt {
-		assert.Equal(t.expected, cronparse.NthDayOfWeek(t.tm, t.w, t.nth), t)
+		assert.Equal(t.expected, utils.NthDayOfWeek(t.tm, t.w, t.nth), t)
 	}
 }

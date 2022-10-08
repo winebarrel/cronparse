@@ -7,16 +7,14 @@ import (
 
 	"github.com/alecthomas/participle/v2"
 	"github.com/alecthomas/participle/v2/lexer"
+	"github.com/winebarrel/cronparse/utils"
 )
 
 var (
-	monthNames = []string{"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"}
-	weekNames  = []string{"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"}
-
 	cronLexer = lexer.MustSimple([]lexer.SimpleRule{
 		{`Number`, `\d+`},
-		{`Month`, `(?i)(?:` + strings.Join(monthNames, "|") + `)`},
-		{`Week`, `(?i)(?:` + strings.Join(weekNames, "|") + `)`},
+		{`Month`, `(?i)(?:` + strings.Join(utils.MonthNames, "|") + `)`},
+		{`Week`, `(?i)(?:` + strings.Join(utils.WeekNames, "|") + `)`},
 		{`Symbol`, `[,\-\*\?/LW#]`},
 		{`SP`, `\s+`},
 	})
@@ -169,7 +167,7 @@ func (v *DayOfMonthExp) Match(t time.Time) bool {
 	} else if v.Any != nil {
 		return v.Any.Match(t.Day())
 	} else if v.Last != nil {
-		return LastOfMonth(t) == t.Day()
+		return utils.LastOfMonth(t) == t.Day()
 	}
 
 	return false

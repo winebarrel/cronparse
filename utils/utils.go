@@ -1,12 +1,17 @@
-package cronparse
+package utils
 
 import (
 	"strings"
 	"time"
 )
 
+var (
+	MonthNames = []string{"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"}
+	WeekNames  = []string{"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"}
+)
+
 func WeekNameToNumber(s string) int {
-	for i, n := range weekNames {
+	for i, n := range WeekNames {
 		if strings.EqualFold(n, s) {
 			return i + 1
 		}
@@ -16,7 +21,7 @@ func WeekNameToNumber(s string) int {
 }
 
 func MonthNameToNumber(s string) int {
-	for i, n := range monthNames {
+	for i, n := range MonthNames {
 		if strings.EqualFold(n, s) {
 			return i + 1
 		}
