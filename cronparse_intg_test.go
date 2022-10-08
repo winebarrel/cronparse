@@ -201,7 +201,7 @@ func TestIntegration(t *testing.T) {
 					Exps: []*cronparse.DayOfWeekExp{
 						{
 							CommonExp: cronparse.CommonExp{},
-							StringRange: &cronparse.WeekRange{
+							NameRange: &cronparse.WeekRange{
 								From: "MON",
 								To:   "FRI",
 							},
@@ -290,7 +290,7 @@ func TestIntegration(t *testing.T) {
 			},
 		},
 		{
-			"0/15 * * * ?	*",
+			"0/15 * * * ? *",
 			&cronparse.Expression{
 				Minutes: &cronparse.Minutes{
 					Exps: []*cronparse.MinutesExp{
@@ -409,7 +409,7 @@ func TestIntegration(t *testing.T) {
 					Exps: []*cronparse.DayOfWeekExp{
 						{
 							CommonExp: cronparse.CommonExp{},
-							StringRange: &cronparse.WeekRange{
+							NameRange: &cronparse.WeekRange{
 								From: "MON",
 								To:   "FRI",
 							},
@@ -480,7 +480,7 @@ func TestIntegration(t *testing.T) {
 					Exps: []*cronparse.DayOfWeekExp{
 						{
 							CommonExp: cronparse.CommonExp{},
-							StringRange: &cronparse.WeekRange{
+							NameRange: &cronparse.WeekRange{
 								From: "MON",
 								To:   "FRI",
 							},
@@ -1123,7 +1123,7 @@ func TestIntegration(t *testing.T) {
 					Exps: []*cronparse.DayOfWeekExp{
 						{
 							CommonExp: cronparse.CommonExp{},
-							String: &cronparse.WeekValue{
+							Name: &cronparse.WeekName{
 								Value: "WED",
 							},
 						},
@@ -1192,7 +1192,7 @@ func TestIntegration(t *testing.T) {
 					Exps: []*cronparse.DayOfWeekExp{
 						{
 							CommonExp: cronparse.CommonExp{},
-							StringRange: &cronparse.WeekRange{
+							NameRange: &cronparse.WeekRange{
 								From: "MON",
 								To:   "FRI",
 							},
@@ -1566,5 +1566,6 @@ func TestIntegration(t *testing.T) {
 		cron, err := cronparse.Parser.ParseString("", t.exp)
 		assert.NoError(err)
 		assert.Equal(cron, t.ast)
+		assert.Equal(t.ast.String(), t.exp)
 	}
 }
