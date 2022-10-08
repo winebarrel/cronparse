@@ -22,5 +22,6 @@ func main() {
 
 	fmt.Println(cron.Minutes.Exps[0].Number.Value) //=> 0
 	fmt.Println(cron.Hours.Exps[0].Number.Value)   //=> 10
+	fmt.Println(cron.String())                     //=> "0 10 * * ? *"
 }
 ```
