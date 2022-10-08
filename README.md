@@ -5,7 +5,7 @@ Cron expression parser.
 ## Installation
 
 ```sh
-go get github.com/winebarrel/cronparse@v1.2.0
+go get github.com/winebarrel/cronparse@v1.3.0
 ```
 
 ## Usage

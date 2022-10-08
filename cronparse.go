@@ -49,9 +49,9 @@ func (v *CommonExp) Present() bool {
 	return v.Increment != nil || v.NumberRange != nil || v.Number != nil || v.All != nil
 }
 
-func (v *CommonExp) Match(x int) bool {
+func (v *CommonExp) Match(x int, base int) bool {
 	if v.Increment != nil {
-		return v.Increment.Match(x)
+		return v.Increment.Match(x, base)
 	} else if v.NumberRange != nil {
 		return v.NumberRange.Match(x)
 	} else if v.Number != nil {
@@ -73,7 +73,7 @@ func (v *MinutesExp) String() string {
 }
 
 func (v *MinutesExp) Match(t time.Time) bool {
-	return v.CommonExp.Match(t.Minute())
+	return v.CommonExp.Match(t.Minute(), 0)
 }
 
 type Minutes struct {
@@ -110,7 +110,7 @@ func (v *HoursExp) String() string {
 }
 
 func (v *HoursExp) Match(t time.Time) bool {
-	return v.CommonExp.Match(t.Hour())
+	return v.CommonExp.Match(t.Hour(), 0)
 }
 
 type Hours struct {
@@ -161,7 +161,7 @@ func (v *DayOfMonthExp) String() string {
 
 func (v *DayOfMonthExp) Match(t time.Time) bool {
 	if v.CommonExp.Present() {
-		return v.CommonExp.Match(t.Day())
+		return v.CommonExp.Match(t.Day(), 1)
 	} else if v.Weekday != nil {
 		return v.Weekday.Match(t)
 	} else if v.Any != nil {
@@ -221,7 +221,7 @@ func (v *MonthExp) String() string {
 
 func (v *MonthExp) Match(t time.Time) bool {
 	if v.CommonExp.Present() {
-		return v.CommonExp.Match(int(t.Month()))
+		return v.CommonExp.Match(int(t.Month()), 1)
 	} else if v.NameRange != nil {
 		return v.NameRange.Match(t.Month())
 	} else if v.Name != nil {
@@ -287,13 +287,11 @@ func (v *DayOfWeekExp) String() string {
 
 func (v *DayOfWeekExp) Match(t time.Time) bool {
 	if v.CommonExp.Present() {
-		wday := int(t.Weekday())
-
-		if wday == 0 {
-			wday = 7
+		if v.CommonExp.Increment != nil {
+			return v.CommonExp.Increment.Match(int(t.Weekday())+1, 1)
+		} else {
+			return v.CommonExp.Match(int(t.Weekday()), 0)
 		}
-
-		return v.CommonExp.Match(wday)
 	} else if v.Instance != nil {
 		return v.Instance.Match(t)
 	} else if v.NameRange != nil {
@@ -343,7 +341,7 @@ func (v *YearExp) String() string {
 }
 
 func (v *YearExp) Match(t time.Time) bool {
-	return v.CommonExp.Match(t.Hour())
+	return v.CommonExp.Match(t.Year(), 1970)
 }
 
 type Year struct {
