@@ -1,5 +1,5 @@
 .PHONY: all
-all: vet lint test
+all: vet test
 
 .PHONY: vet
 vet:
