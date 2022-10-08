@@ -1565,7 +1565,7 @@ func TestIntegration(t *testing.T) {
 	for _, t := range tt {
 		cron, err := cronparse.Parser.ParseString("", t.exp)
 		assert.NoError(err)
-		assert.Equal(cron, t.ast)
-		assert.Equal(t.ast.String(), t.exp)
+		assert.Equal(cron, t.ast, t.exp)
+		assert.Equal(t.exp, t.ast.String(), t.exp)
 	}
 }
