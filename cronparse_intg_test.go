@@ -1311,7 +1311,7 @@ func TestIntegration(t *testing.T) {
 					Exps: []*cronparse.DayOfMonthExp{
 						{
 							CommonExp: cronparse.CommonExp{},
-							Last: &cronparse.Last{
+							Last: &cronparse.LastOfMonth{
 								Value: struct{}{},
 							},
 						},

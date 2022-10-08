@@ -141,8 +141,8 @@ func (v *Hours) Match(t time.Time) bool {
 type DayOfMonthExp struct {
 	Weekday *Weekday `@@ |`
 	CommonExp
-	Any  *Any  `| @@`
-	Last *Last `| @@`
+	Any  *Any         `| @@`
+	Last *LastOfMonth `| @@`
 }
 
 func (v *DayOfMonthExp) String() string {
@@ -167,7 +167,7 @@ func (v *DayOfMonthExp) Match(t time.Time) bool {
 	} else if v.Any != nil {
 		return v.Any.Match(t.Day())
 	} else if v.Last != nil {
-		return utils.LastOfMonth(t) == t.Day()
+		return v.Last.Match(t)
 	}
 
 	return false
@@ -261,10 +261,10 @@ func (v *Month) Match(t time.Time) bool {
 type DayOfWeekExp struct {
 	Instance *Instance `@@ |`
 	CommonExp
-	NameRange *WeekRange `| @@`
-	Name      *WeekName  `| @@`
-	Any       *Any       `| @@`
-	Last      *Last      `| @@`
+	NameRange *WeekRange  `| @@`
+	Name      *WeekName   `| @@`
+	Any       *Any        `| @@`
+	Last      *LastOfWeek `| @@`
 }
 
 func (v *DayOfWeekExp) String() string {
@@ -303,7 +303,7 @@ func (v *DayOfWeekExp) Match(t time.Time) bool {
 	} else if v.Any != nil {
 		return v.Any.Match(t.Weekday())
 	} else if v.Last != nil {
-		return t.Weekday() == time.Saturday
+		return v.Last.Match(t)
 	}
 
 	return false
