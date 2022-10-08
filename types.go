@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"time"
+
+	"github.com/winebarrel/cronparse/utils"
 )
 
 // number
@@ -29,7 +31,7 @@ func (v *MonthName) String() string {
 }
 
 func (v *MonthName) Match(x time.Month) bool {
-	return MonthNameToNumber(v.Value) == int(x)
+	return utils.MonthNameToNumber(v.Value) == int(x)
 }
 
 // week name
@@ -42,7 +44,7 @@ func (v *WeekName) String() string {
 }
 
 func (v *WeekName) Match(x time.Weekday) bool {
-	return WeekNameToNumber(v.Value)%7 == int(x)
+	return utils.WeekNameToNumber(v.Value)%7 == int(x)
 }
 
 // number range
@@ -70,8 +72,8 @@ func (v *WeekRange) String() string {
 }
 
 func (v *WeekRange) Match(x time.Weekday) bool {
-	from := WeekNameToNumber(v.From) % 7
-	to := WeekNameToNumber(v.To)
+	from := utils.WeekNameToNumber(v.From) % 7
+	to := utils.WeekNameToNumber(v.To)
 	n := int(x)
 
 	if from != 0 && x == time.Sunday {
@@ -92,8 +94,8 @@ func (v *MonthRange) String() string {
 }
 
 func (v *MonthRange) Match(x time.Month) bool {
-	from := MonthNameToNumber(v.From)
-	to := MonthNameToNumber(v.To)
+	from := utils.MonthNameToNumber(v.From)
+	to := utils.MonthNameToNumber(v.To)
 	return from <= int(x) && int(x) <= to
 }
 
@@ -168,7 +170,7 @@ func (v *Weekday) String() string {
 
 func (v *Weekday) Match(base time.Time) bool {
 	t := time.Date(base.Year(), base.Month(), v.Value, 0, 0, 0, 0, time.UTC)
-	return NearestWeekday(t) == base.Day()
+	return utils.NearestWeekday(t) == base.Day()
 }
 
 // instance
@@ -182,5 +184,5 @@ func (v *Instance) String() string {
 }
 
 func (v *Instance) Match(t time.Time) bool {
-	return NthDayOfWeek(t, time.Weekday(v.DayOfWeek), v.NthDayOfWeek) == t.Day()
+	return utils.NthDayOfWeek(t, time.Weekday(v.DayOfWeek), v.NthDayOfWeek) == t.Day()
 }
