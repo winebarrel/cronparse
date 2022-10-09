@@ -37,3 +37,7 @@ func main() {
 	// => true
 }
 ```
+
+# Related Links
+
+* [Schedule Expressions for Rules - Amazon CloudWatch Events](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html)
