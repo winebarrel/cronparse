@@ -127,14 +127,14 @@ func (v *Increment) String() string {
 	}
 }
 
-func (v *Increment) Match(x int) bool {
+func (v *Increment) Match(x int, base int) bool {
 	top := v.Top % v.Buttom
 
 	if v.Wildcard {
-		top = 0
+		top = base
 	}
 
-	return x >= v.Top && x%v.Buttom == top
+	return (x >= v.Top && x >= top) && x%v.Buttom == top%v.Buttom
 }
 
 // any

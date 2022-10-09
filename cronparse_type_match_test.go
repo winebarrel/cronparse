@@ -150,7 +150,7 @@ func TestMatchIncrement1(t *testing.T) {
 	}
 
 	for _, t := range tt {
-		assert.Equal(t.expected, x.Match(t.num), t.num)
+		assert.Equal(t.expected, x.Match(t.num, 0), t.num)
 	}
 }
 
@@ -174,11 +174,11 @@ func TestMatchIncrement2(t *testing.T) {
 	}
 
 	for _, t := range tt {
-		assert.Equal(t.expected, x.Match(t.num), t.num)
+		assert.Equal(t.expected, x.Match(t.num, 0), t.num)
 	}
 }
 
-func TestMatchIncrementWildcard(t *testing.T) {
+func TestMatchIncrementWildcard1(t *testing.T) {
 	assert := assert.New(t)
 	x := &cronparse.Increment{Wildcard: true, Buttom: 3}
 
@@ -198,7 +198,31 @@ func TestMatchIncrementWildcard(t *testing.T) {
 	}
 
 	for _, t := range tt {
-		assert.Equal(t.expected, x.Match(t.num), t.num)
+		assert.Equal(t.expected, x.Match(t.num, 0), t.num)
+	}
+}
+
+func TestMatchIncrementWildcard2(t *testing.T) {
+	assert := assert.New(t)
+	x := &cronparse.Increment{Wildcard: true, Buttom: 3}
+
+	tt := []struct {
+		num      int
+		expected bool
+	}{
+		{0, false},
+		{1, true},
+		{2, false},
+		{3, false},
+		{4, true},
+		{5, false},
+		{6, false},
+		{7, true},
+		{8, false},
+	}
+
+	for _, t := range tt {
+		assert.Equal(t.expected, x.Match(t.num, 1), t.num)
 	}
 }
 
