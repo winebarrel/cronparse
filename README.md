@@ -1,6 +1,6 @@
 # cronparse
 
-Cron expression parser.
+Cron expression parser for Amazon EventBridge.
 
 ## Installation
 
