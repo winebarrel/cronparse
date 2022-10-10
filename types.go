@@ -114,14 +114,28 @@ func (v *All) Match(x interface{}) bool {
 
 // increment
 type Increment struct {
-	Wildcard bool `( @"*"`
-	Top      int  `| @Number )`
-	Buttom   int  `"/" @Number`
+	Wildcard   bool        `( @"*"`
+	Top        int         `| @Number`
+	WeekName   *WeekName   `| @@`
+	MonthName  *MonthName  `| @@`
+	WeekRange  *WeekRange  `| @@`
+	MonthRange *MonthRange `| @@`
+	Buttom     int         `) "/" @Number`
 }
 
 func (v *Increment) String() string {
 	if v.Wildcard {
 		return fmt.Sprintf("*/%d", v.Buttom)
+	} else if v.MonthRange != nil {
+		return fmt.Sprintf("%s/%d", v.MonthRange.String(), v.Buttom)
+	} else if v.WeekName != nil {
+		return fmt.Sprintf("%s/%d", v.WeekName.String(), v.Buttom)
+	} else if v.MonthName != nil {
+		return fmt.Sprintf("%s/%d", v.MonthName.String(), v.Buttom)
+	} else if v.WeekRange != nil {
+		return fmt.Sprintf("%s/%d", v.WeekRange.String(), v.Buttom)
+	} else if v.MonthRange != nil {
+		return fmt.Sprintf("%s/%d", v.MonthRange.String(), v.Buttom)
 	} else {
 		return fmt.Sprintf("%d/%d", v.Top, v.Buttom)
 	}
