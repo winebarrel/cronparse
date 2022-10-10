@@ -23,6 +23,6 @@ func main() {
 	triggers := cron.NextN(time.Now(), flags.n)
 
 	for _, t := range triggers {
-		fmt.Println(t.Format("Mon, 02 Jan 2006 15:04:05"))
+		fmt.Println(t.Add(time.Duration(flags.h) * time.Hour).Format("Mon, 02 Jan 2006 15:04:05"))
 	}
 }

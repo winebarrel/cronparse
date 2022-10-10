@@ -14,6 +14,7 @@ var (
 
 type flags struct {
 	n    int
+	h    int
 	expr string
 }
 
@@ -30,6 +31,7 @@ func init() {
 
 func parseFlags() *flags {
 	flags := &flags{}
+	flag.IntVar(&flags.h, "h", 0, "hour to add")
 	flag.IntVar(&flags.n, "n", 10, "number of next triggers")
 	showVersion := flag.Bool("version", false, "print version and exit")
 	flag.Parse()

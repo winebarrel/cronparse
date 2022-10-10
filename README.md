@@ -58,6 +58,8 @@ brew install winebarrel/cronnext/cronnext
 
 ```
 Usage: cronnext [OPTION] CRON_EXPR
+  -h int
+    	hour to add
   -n int
     	number of next triggers (default 10)
   -version
@@ -76,6 +78,18 @@ Wed, 12 Oct 2022 10:00:00
 Wed, 12 Oct 2022 10:10:00
 Wed, 12 Oct 2022 10:20:00
 Wed, 12 Oct 2022 10:30:00
+
+$ cronnext -h -9 "*/10 10 ? * MON-FRI *"
+Tue, 11 Oct 2022 01:00:00
+Tue, 11 Oct 2022 01:10:00
+Tue, 11 Oct 2022 01:20:00
+Tue, 11 Oct 2022 01:30:00
+Tue, 11 Oct 2022 01:40:00
+Tue, 11 Oct 2022 01:50:00
+Wed, 12 Oct 2022 01:00:00
+Wed, 12 Oct 2022 01:10:00
+Wed, 12 Oct 2022 01:20:00
+Wed, 12 Oct 2022 01:30:00
 ```
 
 # Related Links
