@@ -3,7 +3,7 @@ all: vet test build
 
 .PHONY: build
 build:
-	go build ./cmd/cronnext
+	go build ./cmd/cronplan
 
 .PHONY: vet
 vet:
@@ -19,4 +19,4 @@ test:
 
 .PHONY: clean
 clean:
-	rm -f cronnext cronnext.exe
+	rm -f cronplan cronplan.exe

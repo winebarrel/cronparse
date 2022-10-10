@@ -1,9 +1,9 @@
-project_name: cronnext
+project_name: cronplan
 before:
   hooks:
     - go mod tidy
 builds:
-  - main: ./cmd/cronnext
+  - main: ./cmd/cronplan
     ldflags:
       - -X main.version={{.Version}}
     env:
@@ -15,21 +15,21 @@ builds:
 checksum:
   name_template: "checksums.txt"
 brews:
-  - name: cronnext
+  - name: cronplan
     tap:
       owner: winebarrel
-      name: homebrew-cronnext
+      name: homebrew-cronplan
     homepage: https://github.com/winebarrel/cronparse
-    description: cronnext is a tool to show next triggers for cron expression.
+    description: cronplan is a tool to show next triggers for cron expression.
     license: MIT
     install: |
-      bin.install 'cronnext'
+      bin.install 'cronplan'
 nfpms:
-  - id: cronnext-nfpms
+  - id: cronplan-nfpms
     file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Arch }}"
     homepage: https://github.com/winebarrel/cronparse
     maintainer: Genki Sugawara <sugawara@winebarrel.jp>
-    description: cronnext is a tool to show next triggers for cron expression.
+    description: cronplan is a tool to show next triggers for cron expression.
     license: MIT
     formats:
       - deb
