@@ -5,7 +5,7 @@ Cron expression parser for Amazon EventBridge.
 ## Installation
 
 ```sh
-go get github.com/winebarrel/cronparse@v1.3.0
+go get github.com/winebarrel/cronparse@v1.4.0
 ```
 
 ## Usage
