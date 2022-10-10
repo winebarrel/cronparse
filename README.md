@@ -44,20 +44,20 @@ func main() {
 }
 ```
 
-# cronnext
+# cronplan
 
 CLI to show next triggers.
 
 ## Installation
 
 ```
-brew install winebarrel/cronnext/cronnext
+brew install winebarrel/cronplan/cronplan
 ```
 
 ## Usage
 
 ```
-Usage: cronnext [OPTION] CRON_EXPR
+Usage: cronplan [OPTION] CRON_EXPR
   -h int
     	hour to add
   -n int
@@ -67,7 +67,7 @@ Usage: cronnext [OPTION] CRON_EXPR
 ```
 
 ```
-$ cronnext "*/10 10 ? * MON-FRI *"
+$ cronplan "*/10 10 ? * MON-FRI *"
 Tue, 11 Oct 2022 10:00:00
 Tue, 11 Oct 2022 10:10:00
 Tue, 11 Oct 2022 10:20:00
@@ -79,7 +79,7 @@ Wed, 12 Oct 2022 10:10:00
 Wed, 12 Oct 2022 10:20:00
 Wed, 12 Oct 2022 10:30:00
 
-$ cronnext -h -9 "*/10 10 ? * MON-FRI *"
+$ cronplan -h -9 "*/10 10 ? * MON-FRI *"
 Tue, 11 Oct 2022 01:00:00
 Tue, 11 Oct 2022 01:10:00
 Tue, 11 Oct 2022 01:20:00
