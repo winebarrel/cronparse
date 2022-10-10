@@ -1,5 +1,9 @@
 .PHONY: all
-all: vet test
+all: vet test build
+
+.PHONY: build
+build:
+	go build ./cmd/cronnext
 
 .PHONY: vet
 vet:
@@ -12,3 +16,7 @@ lint:
 .PHONY: test
 test:
 	go test ./...
+
+.PHONY: clean
+clean:
+	rm -f cronnext cronnext.exe
