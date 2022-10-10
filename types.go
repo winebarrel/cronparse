@@ -126,8 +126,6 @@ type Increment struct {
 func (v *Increment) String() string {
 	if v.Wildcard {
 		return fmt.Sprintf("*/%d", v.Buttom)
-	} else if v.MonthRange != nil {
-		return fmt.Sprintf("%s/%d", v.MonthRange.String(), v.Buttom)
 	} else if v.WeekName != nil {
 		return fmt.Sprintf("%s/%d", v.WeekName.String(), v.Buttom)
 	} else if v.MonthName != nil {
