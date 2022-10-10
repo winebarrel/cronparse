@@ -14,7 +14,8 @@ builds:
 checksum:
   name_template: "checksums.txt"
 brews:
-  - tap:
+  - name: cronnext
+    tap:
       owner: winebarrel
       name: homebrew-cronnext
     homepage: https://github.com/winebarrel/cronparse
