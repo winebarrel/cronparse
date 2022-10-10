@@ -177,6 +177,16 @@ type DayOfMonth struct {
 	Exps []*DayOfMonthExp `@@ ( "," @@ )*`
 }
 
+func (v *DayOfMonth) HasAny() bool {
+	for _, e := range v.Exps {
+		if e.Any != nil {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (v *DayOfMonth) String() string {
 	strs := make([]string, 0, len(v.Exps))
 
@@ -311,6 +321,16 @@ type DayOfWeek struct {
 	Exps []*DayOfWeekExp `@@ ( "," @@ )*`
 }
 
+func (v *DayOfWeek) HasAny() bool {
+	for _, e := range v.Exps {
+		if e.Any != nil {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (v *DayOfWeek) String() string {
 	strs := make([]string, 0, len(v.Exps))
 
@@ -375,6 +395,10 @@ type Expression struct {
 	Month      *Month      `SP @@`
 	DayOfWeek  *DayOfWeek  `SP @@`
 	Year       *Year       `SP @@`
+}
+
+func Parse(exp string) (*Expression, error) {
+	return Parser.ParseString("", exp)
 }
 
 func (v *Expression) String() string {
