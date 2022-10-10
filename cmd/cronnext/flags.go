@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 var (
@@ -48,7 +49,11 @@ func parseFlags() *flags {
 		log.Fatal("too many arguments")
 	}
 
-	flags.expr = args[0]
+	flags.expr = strings.TrimSpace(args[0])
+
+	if flags.expr == "" {
+		printUsageAndExit()
+	}
 
 	if flags.n < 1 {
 		log.Fatal("'-n' must be >= 1")
