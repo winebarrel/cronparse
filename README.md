@@ -31,9 +31,9 @@ func main() {
 	fmt.Println(cron.String())                     //=> "0 10 * * ? *"
 
 	fmt.Println(cron.Match(time.Date(2022, 11, 3, 9, 0, 0, 0, time.UTC)))
-	// => false
+	//=> false
 	fmt.Println(cron.Match(time.Date(2022, 11, 3, 10, 0, 0, 0, time.UTC)))
-	// => true
+	//=> true
 
 	fmt.Println(cron.Next(time.Date(2022, 11, 3, 10, 0, 0, 0, time.UTC)))
 	//=> 2022-11-03 10:00:00 +0000 UTC
