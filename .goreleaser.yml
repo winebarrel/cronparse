@@ -1,0 +1,35 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: ./cmd/cronnext
+    ldflags:
+      - -X main.version={{.Version}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+checksum:
+  name_template: "checksums.txt"
+brews:
+  - tap:
+      owner: winebarrel
+      name: homebrew-cronnext
+    homepage: https://github.com/winebarrel/cronparse
+    description: cronnext is a tool to show next triggers for cron expression.
+    license: MIT
+    install: |
+      bin.install 'cronnext'
+nfpms:
+  - id: cronnext-nfpms
+    file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Arch }}"
+    homepage: https://github.com/winebarrel/cronparse
+    maintainer: Genki Sugawara <sugawara@winebarrel.jp>
+    description: cronnext is a tool to show next triggers for cron expression.
+    license: MIT
+    formats:
+      - deb
+      - rpm
+    bindir: /usr/bin

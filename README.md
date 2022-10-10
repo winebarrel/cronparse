@@ -44,6 +44,40 @@ func main() {
 }
 ```
 
+# cronnext
+
+CLI to show next triggers.
+
+## Installation
+
+```
+brew install winebarrel/cronnext/cronnext
+```
+
+## Usage
+
+```
+Usage: cronnext [OPTION] CRON_EXPR
+  -n int
+    	number of next triggers (default 10)
+  -version
+    	print version and exit
+```
+
+```
+$ cronnext "0 10 * * ? *"
+2022-10-11 10:00:00 +0900 JST
+2022-10-12 10:00:00 +0900 JST
+2022-10-13 10:00:00 +0900 JST
+2022-10-14 10:00:00 +0900 JST
+2022-10-15 10:00:00 +0900 JST
+2022-10-16 10:00:00 +0900 JST
+2022-10-17 10:00:00 +0900 JST
+2022-10-18 10:00:00 +0900 JST
+2022-10-19 10:00:00 +0900 JST
+2022-10-20 10:00:00 +0900 JST
+```
+
 # Related Links
 
 * [Schedule Expressions for Rules - Amazon CloudWatch Events](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html)

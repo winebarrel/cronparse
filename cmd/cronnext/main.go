@@ -1,0 +1,28 @@
+package main
+
+import (
+	"fmt"
+	"log"
+	"time"
+
+	"github.com/winebarrel/cronparse"
+)
+
+func init() {
+	log.SetFlags(0)
+}
+
+func main() {
+	flags := parseFlags()
+	cron, err := cronparse.Parse(flags.expr)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	triggers := cron.NextN(time.Now(), flags.n)
+
+	for _, t := range triggers {
+		fmt.Println(t)
+	}
+}
