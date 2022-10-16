@@ -1,3 +1,7 @@
+**Note** new version https://github.com/winebarrel/cronplan
+
+
+
 # cronparse
 
 Cron expression parser for Amazon EventBridge.
